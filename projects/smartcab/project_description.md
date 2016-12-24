@@ -19,7 +19,7 @@ This project uses the following software and Python libraries:
 
 If you do not have Python installed yet, it is highly recommended that you install the [Anaconda](http://continuum.io/downloads) distribution of Python, which already has the above packages and more included. Make sure that you select the Python 2.7 installer and not the Python 3.x installer. `pygame` can then be installed using one of the following commands:
 
-Mac:  `conda install -c https://conda.anaconda.org/quasiben pygame` cannot work well for mac sierra.  `pip install pygame` can work well. pls. refer to [topic on forum](https://discussions.udacity.com/t/pygame-blank-window-issue-on-mac-sierra/196156)
+Mac:   `pip install pygame` (`pip` can be installed on mac using `sudo easy_install pip`)
 Windows: `conda install -c https://conda.anaconda.org/tlatorre pygame`  
 Linux:  `conda install -c https://conda.anaconda.org/prkrekel pygame`  
 
