@@ -99,7 +99,7 @@ class LearningAgent(Agent):
         # Set the agent state and default action
         self.state = state
         self.next_waypoint = self.planner.next_waypoint()
-        action = None
+        
 
         ########### 
         ## TO DO ##
@@ -107,6 +107,9 @@ class LearningAgent(Agent):
         # When not learning, choose a random action
         # When learning, choose a random action with 'epsilon' probability
         #   Otherwise, choose an action with the highest Q-value for the current state
+        actionList=[None,'forward', 'left', 'right']
+        action = random.choice(actionList)
+
  
         return action
 
@@ -172,7 +175,7 @@ def run():
     #   display      - set to False to disable the GUI if PyGame is enabled
     #   log_metrics  - set to True to log trial and simulation results to /logs
     #   optimized    - set to True to change the default log file name
-    sim = Simulator(env,update_delay=0.01,log_metrics=True)
+    sim = Simulator(env,update_delay=0.01,display=True,log_metrics=True)
     
     ##############
     # Run the simulator
