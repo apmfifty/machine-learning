@@ -1,5 +1,6 @@
 import random
 import math
+import numpy
 from environment import Agent, Environment
 from planner import RoutePlanner
 from simulator import Simulator
@@ -70,7 +71,7 @@ class LearningAgent(Agent):
             inputs.get('oncoming'),
             inputs.get('left'),
             inputs.get('right'),
-            deadline
+            #deadline
             )
         if state in self.Q:
             pass
@@ -90,8 +91,8 @@ class LearningAgent(Agent):
         ## TO DO ##
         ###########
         # Calculate the maximum Q-value of all actions for a given state
-
-        maxQ = None
+        stats=self.Q[state],
+        maxQ = stats[max(stats, key=stats.get)]
 
         return maxQ 
 
@@ -135,7 +136,13 @@ class LearningAgent(Agent):
         # When learning, choose a random action with 'epsilon' probability
         #   Otherwise, choose an action with the highest Q-value for the current state
         actionList=[None,'forward', 'left', 'right']
-        action = random.choice(actionList)
+        if self.learning==True:
+            stats=self.Q[state]
+            temp_actions=[random.choice(actionList),max(stats, key=stats.get)]
+            temp_weights=[self.epsilon,1.0-self.epsilon]
+            action=numpy.random.choice(temp_actions,p=temp_weights)
+        else:
+            action = random.choice(actionList)
 
  
         return action
@@ -151,6 +158,8 @@ class LearningAgent(Agent):
         ###########
         # When learning, implement the value iteration update rule
         #   Use only the learning rate 'alpha' (do not use the discount factor 'gamma')
+        if self.learning==True:
+            self.Q[state][action]=self.Q[state][action]+self.alpha*reward
 
         return
 
@@ -165,7 +174,6 @@ class LearningAgent(Agent):
         action = self.choose_action(state)  # Choose an action
         reward = self.env.act(self, action) # Receive a reward
         self.learn(state, action, reward)   # Q-learn
-
         return
         
 
@@ -187,7 +195,7 @@ def run():
     #   learning   - set to True to force the driving agent to use Q-learning
     #    * epsilon - continuous value for the exploration factor, default is 1
     #    * alpha   - continuous value for the learning rate, default is 0.5
-    agent = env.create_agent(LearningAgent,learning=True)
+    agent = env.create_agent(LearningAgent,learning=True,alpha=0.5)
     
     ##############
     # Follow the driving agent
@@ -202,7 +210,7 @@ def run():
     #   display      - set to False to disable the GUI if PyGame is enabled
     #   log_metrics  - set to True to log trial and simulation results to /logs
     #   optimized    - set to True to change the default log file name
-    sim = Simulator(env,update_delay=0.5,display=True,log_metrics=True)
+    sim = Simulator(env,update_delay=0.0001,display=False,log_metrics=True)
     
     ##############
     # Run the simulator
@@ -212,5 +220,7 @@ def run():
     sim.run(n_test=10)
 
 
+
 if __name__ == '__main__':
     run()
+
