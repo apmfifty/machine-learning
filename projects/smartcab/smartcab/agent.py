@@ -139,7 +139,7 @@ class LearningAgent(Agent):
         if self.learning==True:
             stats=self.Q[state]
             temp_actions=[random.choice(actionList),max(stats, key=stats.get)]
-            temp_weights=[self.epsilon,1.0-self.epsilon]
+            temp_weights=[abs(self.epsilon),abs(1.0-self.epsilon)]
             action=numpy.random.choice(temp_actions,p=temp_weights)
         else:
             action = random.choice(actionList)
