@@ -47,9 +47,14 @@ class LearningAgent(Agent):
         
         
         # self.epsilon=self.epsilon-0.05 #linear episolon 
-        self.epsilon=math.exp(-0.005*self.Trials)
-        self.alpha=math.exp(-0.005*self.Trials)
         
+        # self.epsilon=math.exp(-0.005*self.Trials)
+        # self.alpha=math.exp(-0.005*self.Trials)
+        if self.Trials<200:
+            self.epsilon=1.0
+        else:
+            self.epsilon=0.0001
+
 
         # self.alpha=self.alpha-0.025
         # self.epsilon=math.cos(self. Trials*0.005)
@@ -84,7 +89,7 @@ class LearningAgent(Agent):
             inputs.get('light'),
             inputs.get('oncoming'),
             inputs.get('left'),
-            inputs.get('right'),
+            # inputs.get('right'),
             # deadline
             )
         if state in self.Q:
