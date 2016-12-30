@@ -62,6 +62,8 @@ class LearningAgent(Agent):
         self.Trials=self.Trials+1.0
         if testing==True:
             self.epsilon=0
+            self.alpha=0.0
+
 
         return None
 
@@ -111,11 +113,11 @@ class LearningAgent(Agent):
         ###########
         # Calculate the maximum Q-value of all actions for a given state
         
-        #this function should return an action
+        
         stats=self.Q[state]
 
 
-        maxQ = max(stats, key=stats.get)
+        maxQ = stats[max(stats, key=stats.get)]
 
         return maxQ 
 
@@ -129,15 +131,16 @@ class LearningAgent(Agent):
         # When learning, check if the 'state' is not in the Q-table
         # If it is not, create a new dictionary for that state
         #   Then, for each action available, set the initial Q-value to 0.0
-        if state in self.Q:
-            pass
-        else:
-            self.Q[state]={
-                None:0.0,
-                'forward':0.0,
-                'left':0.0,
-                'right':0.0
-            }
+        if self.learning==True:
+            if state in self.Q:
+                pass
+            else:
+                self.Q[state]={
+                    None:0.0,
+                    'forward':0.0,
+                    'left':0.0,
+                    'right':0.0
+                }
 
 
         return
@@ -159,19 +162,18 @@ class LearningAgent(Agent):
         # When learning, choose a random action with 'epsilon' probability
         #   Otherwise, choose an action with the highest Q-value for the current state
         actionList=[None,'forward', 'left', 'right']
+        
+        action=None
         if self.learning==True:
+            # select 0(for random action) or 1 (for maxQ action) in given probability
             
-            
-            temp_actions=[random.choice(actionList),self.get_maxQ(state)]
+            actionWithHighQ= [key for key, value in (self.Q[state]).items() if value==self.get_maxQ(state)]
+            temp_actions=[random.choice(actionList),random.choice(actionWithHighQ)]
             temp_weights=[abs(self.epsilon),abs(1.0-self.epsilon)]
             action=numpy.random.choice(temp_actions,p=temp_weights)
 
-
-
         else:
-            action = random.choice(actionList)
-        
- 
+            action=random.choice(actionList)
         return action
 
 
